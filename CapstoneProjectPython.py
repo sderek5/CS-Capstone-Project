@@ -5,20 +5,39 @@ import matplotlib.pyplot as plt
 FILE_NAME = "transactions.csv"
 
 
-transactions = []
-budget = None
+purchases = []
 
-#File functions
+while True:
+    print("\nPersonal Expense Analyzer")
+    print("1. Add purchase")
+    print("2. View purchases")
+    print("3. Exit")
 
-def load_transactions():
-    if not os.path.exists(FILE_NAME):
-        return
+    choice = input("Choose an option: ")
 
-    with open(FILE_NAME, mode='r', newline="") as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            transactions.append({
-                "name": row["name"],
-                "amount": float(row["amount"]),
-                "date": datetime.
-            })
+    if choice == "1":
+        name = input("What did you buy? ")
+        amount = float(input("How much did it cost? $"))
+        category = input("What category is it? ")
+
+        purchase = [name, amount, category]
+        purchases.append(purchase)
+
+        print("Purchase added!")
+
+    elif choice == "2":
+        print("\nYour purchases:")
+
+        for purchase in purchases:
+            print(
+                purchase[0],
+                "$" + str(purchase[1]),
+                purchase[2]
+            )
+
+    elif choice == "3":
+        print("Goodbye!")
+        break
+
+    else:
+        print("Invalid choice.")

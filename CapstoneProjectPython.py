@@ -6,12 +6,42 @@ FILE_NAME = "transactions.csv"
 
 
 purchases = []
+#Load purchases from the CSV
+if os.path.exists(FILE_NAME):
+    with open(FILE_NAME, "r") as file:
+        reader = csv.reader(file)
 
+        for row in reader:
+            row[1] = float(row[1])
+            purchases.append(row)
+
+#Calculate Spending
+def spending_summary():
+    if len(purchases) == 0:
+        print("\nYou don't have any purchases yet.")
+        return
+
+    total = 0
+
+    for purchase in purchases:
+        total += purchase[1]
+
+    average = total / len(purchases)
+
+    print("\n--- Spending Summary ---")
+    print("Number of purchases:", len(purchases))
+    print("Total spent: $" + str(round(total, 2)))
+    print("Average purchase: $" + str(round(average, 2)))
+
+
+
+#Main menu
 while True:
     print("\nPersonal Expense Analyzer")
     print("1. Add purchase")
     print("2. View purchases")
-    print("3. Exit")
+    print("3. Spending Summary")
+    print("4. Exit")
 
     choice = input("Choose an option: ")
 
@@ -22,22 +52,43 @@ while True:
 
         purchase = [name, amount, category]
         purchases.append(purchase)
+        with open(FILE_NAME, "a", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(purchase)
 
         print("Purchase added!")
 
     elif choice == "2":
-        print("\nYour purchases:")
+        print("\n--- Your Purchases ---")
 
-        for purchase in purchases:
-            print(
-                purchase[0],
-                "$" + str(purchase[1]),
-                purchase[2]
-            )
+        if len(purchases) == 0:
+            print("No purchases yet.")
+        else:
+            for purchase in purchases:
+                print(
+                    purchase[0],
+                    "- $" + str(round(purchase[1], 2)),
+                    "-",
+                    purchase[2]
+                )
 
     elif choice == "3":
+        spending_summary()
+
+    elif choice == "4":
         print("Goodbye!")
         break
 
     else:
         print("Invalid choice.")
+
+    
+
+
+
+
+
+
+
+
+

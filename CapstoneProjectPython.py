@@ -33,6 +33,40 @@ def spending_summary():
     print("Total spent: $" + str(round(total, 2)))
     print("Average purchase: $" + str(round(average, 2)))
 
+def category_summary():
+    if len(purchases) == 0:
+        print("\nYou don't have any purchases yet.")
+        return
+
+    categories = {}
+
+    for purchase in purchases:
+        category = purchase[2]
+        amount = purchase[1]
+
+        if category in categories:
+            categories[category] += amount
+        else:
+            categories[category] = amount
+
+    total = sum(categories.values())
+
+    print("\n--- Category Summary ---")
+
+    for category in categories:
+        amount = categories[category]
+        percentage = (amount / total) * 100
+
+        print(
+            category,
+            "- $" + str(round(amount, 2)),
+            "- " + str(round(percentage, 1)) + "%"
+        )
+
+    highest_category = max(categories, key=categories.get)
+
+    print("\nYou spend the most on:", highest_category)
+
 
 
 #Main menu
@@ -41,7 +75,8 @@ while True:
     print("1. Add purchase")
     print("2. View purchases")
     print("3. Spending Summary")
-    print("4. Exit")
+    print("4. View Categories")
+    print("5. Exit")
 
     choice = input("Choose an option: ")
 
@@ -76,6 +111,9 @@ while True:
         spending_summary()
 
     elif choice == "4":
+        category_summary()
+
+    elif choice == "5":
         print("Goodbye!")
         break
 
@@ -83,12 +121,4 @@ while True:
         print("Invalid choice.")
 
     
-
-
-
-
-
-
-
-
 

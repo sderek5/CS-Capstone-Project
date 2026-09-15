@@ -67,6 +67,39 @@ def category_summary():
 
     print("\nYou spend the most on:", highest_category)
 
+def delete_purchase():
+    if len(purchases) == 0:
+        print("\nYou don't have any purchases to delete.")
+        return
+
+    print("\n--- Your Purchases ---")
+
+    for i in range(len(purchases)):
+        purchase = purchases[i]
+        print(
+            str(i + 1) + ".",
+            purchase[0],
+            "- $" + str(round(purchase[1], 2)),
+            "-",
+            purchase[2]
+        )
+
+    choice = int(input("\nWhich purchase do you want to delete? "))
+
+    if choice < 1 or choice > len(purchases):
+        print("Invalid choice.")
+        return
+
+    deleted = purchases.pop(choice - 1)
+
+    with open(FILE_NAME, "w", newline="") as file:
+        writer = csv.writer(file)
+
+        for purchase in purchases:
+            writer.writerow(purchase)
+
+    print(deleted[0], "was deleted.")
+
 
 
 #Main menu
@@ -76,7 +109,8 @@ while True:
     print("2. View purchases")
     print("3. Spending Summary")
     print("4. View Categories")
-    print("5. Exit")
+    print("5. Delete purchase")
+    print("6. Exit")
 
     choice = input("Choose an option: ")
 
@@ -114,6 +148,9 @@ while True:
         category_summary()
 
     elif choice == "5":
+        delete_purchase()
+
+    elif choice == "6":
         print("Goodbye!")
         break
 
